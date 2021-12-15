@@ -21,13 +21,30 @@ class ApiController extends Controller
             return view('login', ['message' => $response["message"]]);
         }
     }
-    public function register(Request $request)
+    public function registerAsStudent(Request $request)
     {
         $client = new Client();
         $body['nama'] = $request->nama;
         $body['email'] = $request->email;
         $body['phone'] = $request->phone;
         $body['password'] = $request->password;
+        $body['status'] = "student";
+        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/login/email/', ['body' => $body]);
+        $response = json_decode($res->getBody(), true);
+        if ($response["success"]) {
+            return view('dashboard', ['user-email' => $request->email]);
+        } else {
+            return view('register', ['message' => $response["message"]]);
+        }
+    }
+    public function registerAsLecturer(Request $request)
+    {
+        $client = new Client();
+        $body['nama'] = $request->nama;
+        $body['email'] = $request->email;
+        $body['phone'] = $request->phone;
+        $body['password'] = $request->password;
+        $body['status'] = "lecturer";
         $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/login/email/', ['body' => $body]);
         $response = json_decode($res->getBody(), true);
         if ($response["success"]) {
@@ -43,11 +60,57 @@ class ApiController extends Controller
         $response = json_decode($request->getBody(), true);
         return view('users', ['users' => $response]);
     }
-    public function getEvents()
+    public function getClasses()
     {
         $client = new Client();
         $request = $client->get('https://guarded-stream-71687.herokuapp.com/api/events/');
         $response = json_decode($request->getBody(), true);
-        return view('events', ['events' => $response]);
+        return view('classes', ['classes' => $response]);
+    }
+    public function getUserById(Request $request)
+    {
+        $client = new Client();
+        $userId = $request->userId;
+        $request = $client->get('https://guarded-stream-71687.herokuapp.com/api/users/' . $userId);
+        $response = json_decode($request->getBody(), true);
+        if ($response["data"]["status"] == "lecturer") {
+            return view('lecturer-view', ['user' => $response]);
+        } else {
+            return view('user-view', ['user' => $response]);
+        }
+    }
+    public function getClassById(Request $request)
+    {
+        $client = new Client();
+        $classId = $request->classId;
+        $request = $client->get('https://guarded-stream-71687.herokuapp.com/api/events/' . $classId);
+        $response = json_decode($request->getBody(), true);
+        return view('class-detail', ['event' => $response]);
+    }
+    public function joinClass(Request $request)
+    {
+        $client = new Client();
+        $classId = $request->classId;
+        $userId = $request->userId;
+        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/participant/' . $classId . $userId);
+        $response = json_decode($res->getBody(), true);
+        if ($response["success"]) {
+        } else {
+        }
+    }
+    public function addClass(Request $request)
+    {
+        $client = new Client();
+        $body['title'] = $request->title;
+        $body['link'] = $request->link;
+        $body['time'] = $request->class_time;
+        $body['lecturer'] = $request->lecturer;
+        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/events/', ['body' => $body]);
+        $response = json_decode($res->getBody(), true);
+        if ($response["success"]) {
+            return view('dashboard', ['user-email' => $request->email]);
+        } else {
+            return view('register', ['message' => $response["message"]]);
+        }
     }
 }
