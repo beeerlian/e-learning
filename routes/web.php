@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/users', [ApiController::class, 'getUsers']);
+Route::get('/events', [ApiController::class, 'getEvents']);
+Route::get('/login', function () {
+    return view('login');
+});
+Route::get('/register', function () {
+    return view('register');
+});
+Route::post('/login', [ApiController::class, 'login']);
+Route::post('/register', [ApiController::class, 'register']);
