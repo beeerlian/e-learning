@@ -13,42 +13,26 @@ class ApiController extends Controller
         $client = new Client();
         $body['email'] = $request->email;
         $body['password'] = $request->password;
-        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/login/email/', ['body' => $body]);
+        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/login/email/', ['form_params' => $body]);
         $response = json_decode($res->getBody(), true);
-        if ($response["success"]) {
-            return view('dashboard', ['user-email' => $request->email]);
+        if ($response["success"] === true) {
+            return view('dashboard', ['useremail' => $request->email]);
         } else {
             return view('login', ['message' => $response["message"]]);
         }
     }
-    public function registerAsStudent(Request $request)
+    public function register(Request $request)
     {
         $client = new Client();
         $body['nama'] = $request->nama;
         $body['email'] = $request->email;
         $body['phone'] = $request->phone;
         $body['password'] = $request->password;
-        $body['status'] = "student";
-        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/login/email/', ['body' => $body]);
+        $body['status'] = $request->status;
+        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/register/', ['form_params' => $body]);
         $response = json_decode($res->getBody(), true);
-        if ($response["success"]) {
-            return view('dashboard', ['user-email' => $request->email]);
-        } else {
-            return view('register', ['message' => $response["message"]]);
-        }
-    }
-    public function registerAsLecturer(Request $request)
-    {
-        $client = new Client();
-        $body['nama'] = $request->nama;
-        $body['email'] = $request->email;
-        $body['phone'] = $request->phone;
-        $body['password'] = $request->password;
-        $body['status'] = "lecturer";
-        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/login/email/', ['body' => $body]);
-        $response = json_decode($res->getBody(), true);
-        if ($response["success"]) {
-            return view('dashboard', ['user-email' => $request->email]);
+        if ($response["success"] === true) {
+            return view('dashboard', ['useremail' => $request->email]);
         } else {
             return view('register', ['message' => $response["message"]]);
         }
@@ -73,7 +57,7 @@ class ApiController extends Controller
         $userId = $request->userId;
         $request = $client->get('https://guarded-stream-71687.herokuapp.com/api/users/' . $userId);
         $response = json_decode($request->getBody(), true);
-        if ($response["data"]["status"] == "lecturer") {
+        if ($response["data"]["status"] === "lecturer") {
             return view('lecturer-view', ['user' => $response]);
         } else {
             return view('user-view', ['user' => $response]);
@@ -94,7 +78,7 @@ class ApiController extends Controller
         $userId = $request->userId;
         $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/participant/' . $classId . $userId);
         $response = json_decode($res->getBody(), true);
-        if ($response["success"]) {
+        if ($response["success"] === true) {
         } else {
         }
     }
@@ -105,10 +89,10 @@ class ApiController extends Controller
         $body['link'] = $request->link;
         $body['time'] = $request->class_time;
         $body['lecturer'] = $request->lecturer;
-        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/events/', ['body' => $body]);
+        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/events/', ['form_params' => $body]);
         $response = json_decode($res->getBody(), true);
-        if ($response["success"]) {
-            return view('dashboard', ['user-email' => $request->email]);
+        if ($response["success"] === true) {
+            return view('dashboard', ['useremail' => $request->email]);
         } else {
             return view('register', ['message' => $response["message"]]);
         }

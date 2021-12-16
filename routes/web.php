@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,11 +21,11 @@ Route::get('/', function () {
 
 Route::get('/users', [ApiController::class, 'getUsers']);
 Route::get('/events', [ApiController::class, 'getEvents']);
-Route::get('/login', function () {
+Route::get('/login-email', function () {
     return view('login');
 });
 Route::get('/register', function () {
     return view('register');
 });
 Route::post('/login', [ApiController::class, 'login']);
-Route::post('/register', [ApiController::class, 'register']);
+Route::post('/register-user', [ApiController::class, 'register']);
