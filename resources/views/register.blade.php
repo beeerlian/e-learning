@@ -65,7 +65,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a href={{route('register').'#about'}}  class="nav-link">Studio</a>
+            <a href="index.html#about" class="nav-link">Studio</a>
           </li>
           <li class="nav-item">
             <a href="index.html#project" class="nav-link">Our Works</a>
