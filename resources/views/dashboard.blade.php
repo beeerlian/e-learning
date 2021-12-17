@@ -44,17 +44,9 @@ https://templatemo.com/tm-538-digital-trend
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
+                    
                     <li class="nav-item">
-                        <a href="#about" class="nav-link smoothScroll">Studio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#project" class="nav-link smoothScroll">Our Works</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="blog.html" class="nav-link">Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link contact">Contact</a>
+                        <a href={{ url('/login-email',) }} class="nav-link contact">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -138,10 +130,12 @@ https://templatemo.com/tm-538-digital-trend
                                        <small>{{$class["time"]}}</small>
 
                                        <h3>
-                                            <a href="project-detail.html">
-                                                 <span>{{$class["title"]}}</span>
-                                                 <i class="fa fa-angle-right project-icon"></i>
-                                            </a>
+                                        <div class="row">
+                                             <div class="col-8"><span>{{$class["title"]}}</span></div>
+                                             <div class="col-4"><a target="_blank" href={{$class["link"]}} class="btn btn-outline-info">Join Now!</a></div>
+                                           </div>
+                                           
+                                           
                                        </h3>
                                   </div>
                              </div>    
@@ -195,9 +189,13 @@ https://templatemo.com/tm-538-digital-trend
                        <div class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center">
                              <div class="hero-text">
 
-                                  <h1 class="text-white" data-aos="fade-up">Buat kelas terbaikmu!</h1>
-
-                                  <a href="contact.html" class="custom-btn btn-bg btn mt-3" data-aos="fade-up" data-aos-delay="100">Jadi bagian dari guru-guru terbaik kami!</a>
+                                   <h1 class="text-white" data-aos="fade-up">Buat kelas terbaikmu!</h1>
+                                   <form action="/create-event-page" method="get">
+                                        <input type = "hidden" name = "_token" value = "<?php echo csrf_token() ?>">
+                                        <input type="hidden" name="userid" value={{$userid}}> <br/>
+                                        <input class="custom-btn btn-bg btn mt-3" data-aos="fade-up" data-aos-delay="100" type="submit" value=" Jadi bagian dari guru-guru terbaik kami!" name="btn-input">
+                                   </form>
+                                   
 
                                   <strong class="d-block py-3 pl-5 text-white" data-aos="fade-up" data-aos-delay="200"><i class="fa fa-phone mr-2"></i> +62 888 826 7265</strong>
                              </div>

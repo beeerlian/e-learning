@@ -27,5 +27,10 @@ Route::get('/login-email', function () {
 Route::get('/register', function () {
     return view('register');
 });
+
+Route::get('/create-event-page', [ApiController::class, 'createEventPage']);
+
 Route::post('/login', [ApiController::class, 'login']);
 Route::post('/register-user', [ApiController::class, 'register']);
+
+Route::post('/add-event', [ApiController::class, 'addEvent']);

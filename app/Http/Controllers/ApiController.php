@@ -8,6 +8,35 @@ use GuzzleHttp\Client;
 
 class ApiController extends Controller
 {
+
+
+    public function createEventPage(Request $request)
+    {
+        $userId = $request->userid;
+        return view('create-events', ['userId' => $userId]);
+    }
+
+    public function addEvent(Request $request)
+    {
+        $client = new Client();
+        $body['title'] = $request->title;
+        $body['link'] = $request->link;
+        $body['time'] = $request->time;
+        $body['lecturer'] = $request->lecturer;
+        $lecturer = $request->lecturer;
+        $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/events/', ['form_params' => $body]);
+        $response = json_decode($res->getBody(), true);
+        if ($response["success"] === true) {
+            $request = $client->get('https://guarded-stream-71687.herokuapp.com/api/events/');
+            $classes = json_decode($request->getBody(), true);
+            $req = $client->get('https://guarded-stream-71687.herokuapp.com/api/users/' . $lecturer);
+            $user = json_decode($req->getBody(), true);
+            return view('dashboard', ['classes' => $classes,  'user' => $user, 'useremail' => $user["data"]["email"], 'userid' => $user["data"]["_id"], 'status' => $user["data"]["status"],]);
+        } else {
+            return view('login-email', ['userId' => $request->lecturer]);
+        }
+    }
+
     public function login(Request $request)
     {
         $client = new Client();
