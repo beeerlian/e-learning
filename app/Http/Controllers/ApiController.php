@@ -16,7 +16,12 @@ class ApiController extends Controller
         $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/login/email/', ['form_params' => $body]);
         $response = json_decode($res->getBody(), true);
         if ($response["success"] === true) {
-            return view('dashboard', ['useremail' => $request->email]);
+            $email = $request->email;
+            $request = $client->get('https://guarded-stream-71687.herokuapp.com/api/events/');
+            $classes = json_decode($request->getBody(), true);
+            $request = $client->get('https://guarded-stream-71687.herokuapp.com/api/users/' . $response["data"]["_id"]);
+            $user = json_decode($request->getBody(), true);
+            return view('dashboard', ['useremail' => $email, 'classes' => $classes, 'userid' => $response["data"]["_id"], 'status' => $response["data"]["status"], 'user' => $user]);
         } else {
             return view('login', ['message' => $response["message"]]);
         }
@@ -32,7 +37,12 @@ class ApiController extends Controller
         $res = $client->post('https://guarded-stream-71687.herokuapp.com/api/users/register/', ['form_params' => $body]);
         $response = json_decode($res->getBody(), true);
         if ($response["success"] === true) {
-            return view('dashboard', ['useremail' => $request->email]);
+            $email = $request->email;
+            $request = $client->get('https://guarded-stream-71687.herokuapp.com/api/events/');
+            $classes = json_decode($request->getBody(), true);
+            $request = $client->get('https://guarded-stream-71687.herokuapp.com/api/users/' . $response["data"]["InsertedID"]);
+            $user = json_decode($request->getBody(), true);
+            return view('dashboard', ['useremail' => $email, 'classes' => $classes, 'userid' => $response["data"]["InsertedID"], 'status' => $body['status'], 'user' => $user]);
         } else {
             return view('register', ['message' => $response["message"]]);
         }
